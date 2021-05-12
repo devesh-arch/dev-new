@@ -1,0 +1,19 @@
+node{
+   stage('SCM Checkout'){
+     git 'https://bitbucket.org/devesh16/devops/src/master/'
+	 }
+   stage('Compile-Package'){
+     def mvnHome = tool name: 'maven3', type: 'maven'
+     sh "${mvnHome}/bin/mvn package"
+     }
+   stage('Deploy to Tomcat'){
+      sshagent(['tomcat-dev']) {
+         sh 'scp -o StrictHostKeyChecking=no target/*.war ec2-user@172.31.42.119:/opt/tomcat/webapps'
+      }
+     }
+   stage('Email Notification'){
+    mail bcc: '', body: '''Hi,
+    Welcome to Jenkins email notification.
+    Thanks''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'devjisuperhit@gmail.com'
+    }	 
+}
