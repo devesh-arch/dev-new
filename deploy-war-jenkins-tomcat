@@ -1,6 +1,6 @@
 node{
    stage('SCM Checkout'){
-     git 'https://bitbucket.org/devesh16/devops/src/master/'
+     git 'https://github.com/devesh-arch/dev-new'
 	 }
    stage('Compile-Package'){
      def mvnHome = tool name: 'maven3', type: 'maven'
